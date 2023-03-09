@@ -1,28 +1,32 @@
-const http = require('http');
+const express = require("express");
+const app = express();
 const fs = require('fs');
+const port = 3000;
 
-const server = http.createServer((req,res)=>{
-  if (req.url==='/'){
-    fs.readFile('./index.html',(err,content)=>{
-      res.writeHead(200,'Content-type: HTML');
-      res.end(content);
-    })
-  }else if (req.url==='/about'){
-    fs.readFile('./about.html',(err,content)=>{
-      res.writeHead(200,'Content-type: HTML');
-      res.end(content);
-    })
-  }else if (req.url==='/contact'){
-    fs.readFile('./contact-me.html',(err,content)=>{
-      res.writeHead(200,'Content-type: HTML');
-      res.end(content);
-    })
-  }else{
-    fs.readFile('./404.html',(err,content)=>{
-      res.writeHead(200,'Content-type: HTML');
-      res.end(content);
-    })
-  }
+app.get("/", (req,res)=>{
+  fs.readFile('./index.html',(err,content)=>{
+    res.writeHead(200,'Content-type: HTML');
+    res.end(content);
+  })
 });
-const PORT=5000;
-server.listen(PORT);
+app.get("/about", (req,res)=>{
+  fs.readFile('./about.html',(err,content)=>{
+    res.writeHead(200,'Content-type: HTML');
+    res.end(content);
+  })
+});
+app.get("/contact", (req,res)=>{
+  fs.readFile('./contact-me.html',(err,content)=>{
+    res.writeHead(200,'Content-type: HTML');
+    res.end(content);
+  })
+});
+app.get("*", (req,res)=>{
+  fs.readFile('./404.html',(err,content)=>{
+    res.writeHead(200,'Content-type: HTML');
+    res.end(content);
+  })
+});
+app.listen(port,()=>{
+  console.log(`app running on port ${port}`);
+})
